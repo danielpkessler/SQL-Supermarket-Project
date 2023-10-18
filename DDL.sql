@@ -1,11 +1,3 @@
----Universite de Montreal
----IFT2821 Intro aux bases de donnees
----Hiver 2023
----Projet Epiceries
----Equipe 06
-
-----Ce fichier SQL contient le LDD : création de la base, des tables, procedures, fonctions, declencheurs
-
 -- CREATE DATABASE MAXI;
 USE MAXI;
 
