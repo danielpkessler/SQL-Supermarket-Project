@@ -1,9 +1,3 @@
----Universite de Montreal
----IFT2821 Intro aux bases de donnees
----Hiver 2023
----Projet Epiceries
----Equipe 06
-
 USE MAXI;
 
 -------------------------------------------------------------------------------------------------------------------
