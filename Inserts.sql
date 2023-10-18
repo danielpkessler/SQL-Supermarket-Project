@@ -1,11 +1,3 @@
----Universite de Montreal
----IFT2821 Intro aux bases de donnees
----Hiver 2023
----Projet Epiceries
----Equipe 06
-
-----Ce fichier SQL contient le LMD : insertion des donnees dans les tables
-
 USE MAXI;
 
 ---TRUNCATE TABLE Gerant;
