@@ -1,25 +1,14 @@
 Attribute VB_Name = "Module1"
 
-'___________________________________________________________________________________________
-'IFT2821 Intro aux bases de donnees
-'Hiver 2023
-'Projet Epiceries
-'Equipe 06
-
-'Ce fichier VBA (.bas) contient le code pour executer :
-' 1 - connexion au serveur SQL
-' 2 - exécution des procédures SQL à partir des variables extraites de l'interface Excel
-'___________________________________________________________________________________________
-
 Sub afficherLivraisons()
 
     Application.ScreenUpdating = False
 
-    'effacer les donnees présentes dans le tableau
+    'effacer les donnees prÃ©sentes dans le tableau
     Worksheets("CONFIG").Range("E8:Z200").Delete
 
 
-    'opérer la connexion à la procédure
+    'opÃ©rer la connexion Ã  la procÃ©dure
     On Error GoTo ErrHandler:
   
     'variables de la connexion
@@ -28,15 +17,15 @@ Sub afficherLivraisons()
     Dim objParm1 As New ADODB.Parameter
     Dim objRs As New ADODB.Recordset
   
-    ' assigner à l'objet CommandText la procedure
-    objCmd.CommandText = "sp_afficherLivraisons" '******************************************************************************************************************PROCÉDURE SQL
+    ' assigner Ã  l'objet CommandText la procedure
+    objCmd.CommandText = "sp_afficherLivraisons" '******************************************************************************************************************PROCÃ‰DURE SQL
     objCmd.CommandType = adCmdStoredProc
   
-    ' connexion à la source de donnees
+    ' connexion Ã  la source de donnees
     Set objConn = GetNewConnection
     objCmd.ActiveConnection = objConn
   
-    ' actualiser la commande avec les paramètres
+    ' actualiser la commande avec les paramÃ¨tres
     objCmd.Parameters.Refresh
   
     ' variables de la procedure
@@ -49,7 +38,7 @@ Sub afficherLivraisons()
     ' execution
     Set objRs = objCmd.Execute
   
-    'coller les valeurs enregistrées dans le recordset
+    'coller les valeurs enregistrÃ©es dans le recordset
     Set WSP1 = Worksheets("CONFIG")
         WSP1.Activate
         If objRs.EOF = False Then WSP1.Cells(10, 5).CopyFromRecordset objRs
@@ -57,7 +46,7 @@ Sub afficherLivraisons()
     'mise en page des titres
     
         Range("E7").Select
-        ActiveCell.FormulaR1C1 = "Livraisons sélectionnées"
+        ActiveCell.FormulaR1C1 = "Livraisons sÃ©lectionnÃ©es"
     
         Range("E9").Select
         ActiveCell.FormulaR1C1 = "No Livraison"
@@ -66,11 +55,11 @@ Sub afficherLivraisons()
         Range("G9").Select
         ActiveCell.FormulaR1C1 = "Horaire"
         Range("H9").Select
-        ActiveCell.FormulaR1C1 = "Épicerie"
+        ActiveCell.FormulaR1C1 = "Ã‰picerie"
         Range("I9").Select
         ActiveCell.FormulaR1C1 = "Commande"
         Range("J9").Select
-        ActiveCell.FormulaR1C1 = "Équipe"
+        ActiveCell.FormulaR1C1 = "Ã‰quipe"
         Range("K9").Select
         ActiveCell.FormulaR1C1 = "Camion"
         Range("L9").Select
@@ -156,11 +145,11 @@ Sub afficherCommande()
 
 Application.ScreenUpdating = False
 
-'effacer les donnees présentes dans le tableau
+'effacer les donnees prÃ©sentes dans le tableau
     Worksheets("CONFIG").Range("E8:Z200").Delete
 
 
-'opérer la connexion à la procédure
+'opÃ©rer la connexion Ã  la procÃ©dure
     On Error GoTo ErrHandler:
   
   'variables de la connexion
@@ -169,15 +158,15 @@ Application.ScreenUpdating = False
     Dim objParm1 As New ADODB.Parameter
     Dim objRs As New ADODB.Recordset
   
-    ' assigner à l'objet CommandText la procedure
-    objCmd.CommandText = "sp_afficherCommande" '******************************************************************************************************************PROCÉDURE SQL
+    ' assigner Ã  l'objet CommandText la procedure
+    objCmd.CommandText = "sp_afficherCommande" '******************************************************************************************************************PROCÃ‰DURE SQL
     objCmd.CommandType = adCmdStoredProc
   
-    ' connexion à la source de donnees
+    ' connexion Ã  la source de donnees
     Set objConn = GetNewConnection
     objCmd.ActiveConnection = objConn
   
-    ' actualiser la commande avec les paramètres
+    ' actualiser la commande avec les paramÃ¨tres
     objCmd.Parameters.Refresh
   
     ' variables de la procedure
@@ -188,7 +177,7 @@ Application.ScreenUpdating = False
     ' execution
     Set objRs = objCmd.Execute
   
-    'coller les valeurs enregistrées dans le recordset
+    'coller les valeurs enregistrÃ©es dans le recordset
     Set WSP1 = Worksheets("CONFIG")
         WSP1.Activate
         If objRs.EOF = False Then WSP1.Cells(10, 5).CopyFromRecordset objRs
@@ -203,7 +192,7 @@ Application.ScreenUpdating = False
         Range("F9").Select
         ActiveCell.FormulaR1C1 = "Nom"
         Range("G9").Select
-        ActiveCell.FormulaR1C1 = "Catégorie"
+        ActiveCell.FormulaR1C1 = "CatÃ©gorie"
         Range("H9").Select
         ActiveCell.FormulaR1C1 = "Quantite"
 
@@ -288,11 +277,11 @@ Sub afficherCamions()
 
 Application.ScreenUpdating = False
 
-'effacer les donnees présentes dans le tableau
+'effacer les donnees prÃ©sentes dans le tableau
     Worksheets("CONFIG").Range("E8:Z200").Delete
 
 
-'opérer la connexion à la procédure
+'opÃ©rer la connexion Ã  la procÃ©dure
     On Error GoTo ErrHandler:
   
   'variables de la connexion
@@ -301,15 +290,15 @@ Application.ScreenUpdating = False
     Dim objParm1 As New ADODB.Parameter
     Dim objRs As New ADODB.Recordset
   
-    ' assigner à l'objet CommandText la procedure
-    objCmd.CommandText = "sp_afficherCamions" '******************************************************************************************************************PROCÉDURE SQL
+    ' assigner Ã  l'objet CommandText la procedure
+    objCmd.CommandText = "sp_afficherCamions" '******************************************************************************************************************PROCÃ‰DURE SQL
     objCmd.CommandType = adCmdStoredProc
   
-    ' connexion à la source de donnees
+    ' connexion Ã  la source de donnees
     Set objConn = GetNewConnection
     objCmd.ActiveConnection = objConn
   
-    ' actualiser la commande avec les paramètres
+    ' actualiser la commande avec les paramÃ¨tres
     objCmd.Parameters.Refresh
   
     ' variables de la procedure
@@ -322,7 +311,7 @@ Application.ScreenUpdating = False
     ' execution
     Set objRs = objCmd.Execute
   
-    'coller les valeurs enregistrées dans le recordset
+    'coller les valeurs enregistrÃ©es dans le recordset
     Set WSP1 = Worksheets("CONFIG")
         WSP1.Activate
         If objRs.EOF = False Then WSP1.Cells(10, 5).CopyFromRecordset objRs
@@ -330,22 +319,22 @@ Application.ScreenUpdating = False
     'mise en page des titres
     
         Range("E7").Select
-        ActiveCell.FormulaR1C1 = "Camions sélectionnés"
+        ActiveCell.FormulaR1C1 = "Camions sÃ©lectionnÃ©s"
         
         Range("E9").Select
         ActiveCell.FormulaR1C1 = "Immatriculation"
         Range("F9").Select
         ActiveCell.FormulaR1C1 = "Marque"
         Range("G9").Select
-        ActiveCell.FormulaR1C1 = "Modèle"
+        ActiveCell.FormulaR1C1 = "ModÃ¨le"
         Range("H9").Select
-        ActiveCell.FormulaR1C1 = "Année"
+        ActiveCell.FormulaR1C1 = "AnnÃ©e"
         Range("I9").Select
-        ActiveCell.FormulaR1C1 = "Équipe"
+        ActiveCell.FormulaR1C1 = "Ã‰quipe"
         Range("J9").Select
-        ActiveCell.FormulaR1C1 = "Capacité"
+        ActiveCell.FormulaR1C1 = "CapacitÃ©"
         Range("K9").Select
-        ActiveCell.FormulaR1C1 = "Capacité disponible"
+        ActiveCell.FormulaR1C1 = "CapacitÃ© disponible"
         
         Range("E9:K9").Select
         Selection.Font.Bold = True
@@ -427,11 +416,11 @@ Sub afficherClients()
 
 Application.ScreenUpdating = False
 
-'effacer les donnees présentes dans le tableau
+'effacer les donnees prÃ©sentes dans le tableau
     Worksheets("CONFIG").Range("E8:Z200").Delete
 
 
-'opérer la connexion à la procédure
+'opÃ©rer la connexion Ã  la procÃ©dure
     On Error GoTo ErrHandler:
   
   'variables de la connexion
@@ -440,15 +429,15 @@ Application.ScreenUpdating = False
     Dim objParm1 As New ADODB.Parameter
     Dim objRs As New ADODB.Recordset
   
-    ' assigner à l'objet CommandText la procedure
-    objCmd.CommandText = "sp_afficherClients" '******************************************************************************************************************PROCÉDURE SQL
+    ' assigner Ã  l'objet CommandText la procedure
+    objCmd.CommandText = "sp_afficherClients" '******************************************************************************************************************PROCÃ‰DURE SQL
     objCmd.CommandType = adCmdStoredProc
   
-    ' connexion à la source de donnees
+    ' connexion Ã  la source de donnees
     Set objConn = GetNewConnection
     objCmd.ActiveConnection = objConn
   
-    ' actualiser la commande avec les paramètres
+    ' actualiser la commande avec les paramÃ¨tres
     objCmd.Parameters.Refresh
   
     ' variables de la procedure
@@ -465,7 +454,7 @@ Application.ScreenUpdating = False
     ' execution
     Set objRs = objCmd.Execute
   
-    'coller les valeurs enregistrées dans le recordset
+    'coller les valeurs enregistrÃ©es dans le recordset
     Set WSP1 = Worksheets("CONFIG")
         WSP1.Activate
         If objRs.EOF = False Then WSP1.Cells(10, 5).CopyFromRecordset objRs
@@ -473,12 +462,12 @@ Application.ScreenUpdating = False
     'mise en page des titres
     
         Range("E7").Select
-        ActiveCell.FormulaR1C1 = "Clients sélectionnés"
+        ActiveCell.FormulaR1C1 = "Clients sÃ©lectionnÃ©s"
         
         Range("E9").Select
         ActiveCell.FormulaR1C1 = "Nom"
         Range("F9").Select
-        ActiveCell.FormulaR1C1 = "Prénom"
+        ActiveCell.FormulaR1C1 = "PrÃ©nom"
         Range("G9").Select
         ActiveCell.FormulaR1C1 = "Rue"
         Range("H9").Select
@@ -568,11 +557,11 @@ Sub afficherInventaire()
 
 Application.ScreenUpdating = False
 
-'effacer les donnees présentes dans le tableau
+'effacer les donnees prÃ©sentes dans le tableau
     Worksheets("CONFIG").Range("E8:Z200").Delete
 
 
-'opérer la connexion à la procédure
+'opÃ©rer la connexion Ã  la procÃ©dure
     On Error GoTo ErrHandler:
   
   'variables de la connexion
@@ -581,15 +570,15 @@ Application.ScreenUpdating = False
     Dim objParm1 As New ADODB.Parameter
     Dim objRs As New ADODB.Recordset
   
-    ' assigner à l'objet CommandText la procedure
-    objCmd.CommandText = "sp_afficherInventaire" '******************************************************************************************************************PROCÉDURE SQL
+    ' assigner Ã  l'objet CommandText la procedure
+    objCmd.CommandText = "sp_afficherInventaire" '******************************************************************************************************************PROCÃ‰DURE SQL
     objCmd.CommandType = adCmdStoredProc
   
-    ' connexion à la source de donnees
+    ' connexion Ã  la source de donnees
     Set objConn = GetNewConnection
     objCmd.ActiveConnection = objConn
   
-    ' actualiser la commande avec les paramètres
+    ' actualiser la commande avec les paramÃ¨tres
     objCmd.Parameters.Refresh
   
     ' variables de la procedure
@@ -601,25 +590,25 @@ Application.ScreenUpdating = False
     ' execution
     Set objRs = objCmd.Execute
   
-    'coller les valeurs enregistrées dans le recordset
+    'coller les valeurs enregistrÃ©es dans le recordset
     Set WSP1 = Worksheets("CONFIG")
         WSP1.Activate
         If objRs.EOF = False Then WSP1.Cells(10, 5).CopyFromRecordset objRs
 
     'mise en page des titres
         Range("E7").Select
-        ActiveCell.FormulaR1C1 = "Inventaire à jour"
+        ActiveCell.FormulaR1C1 = "Inventaire Ã  jour"
         
         Range("E9").Select
         ActiveCell.FormulaR1C1 = "ID_Article"
         Range("F9").Select
         ActiveCell.FormulaR1C1 = "Nom"
         Range("G9").Select
-        ActiveCell.FormulaR1C1 = "Catégorie"
+        ActiveCell.FormulaR1C1 = "CatÃ©gorie"
         Range("H9").Select
         ActiveCell.FormulaR1C1 = "Prix"
         Range("I9").Select
-        ActiveCell.FormulaR1C1 = "Quantité en inventaire"
+        ActiveCell.FormulaR1C1 = "QuantitÃ© en inventaire"
 
         Range("E9:I9").Select
         Selection.Font.Bold = True
@@ -700,7 +689,7 @@ ErrHandler:
 End Sub
 Sub creerCommande()
 
-'opérer la connexion à la procédure
+'opÃ©rer la connexion Ã  la procÃ©dure
     On Error GoTo ErrHandler:
   
   'variables de la connexion
@@ -709,15 +698,15 @@ Sub creerCommande()
     Dim objParm1 As New ADODB.Parameter
     Dim objRs As New ADODB.Recordset
   
-    ' assigner à l'objet CommandText la procedure
-    objCmd.CommandText = "sp_creerCommande" '******************************************************************************************************************PROCÉDURE SQL
+    ' assigner Ã  l'objet CommandText la procedure
+    objCmd.CommandText = "sp_creerCommande" '******************************************************************************************************************PROCÃ‰DURE SQL
     objCmd.CommandType = adCmdStoredProc
   
-    ' connexion à la source de donnees
+    ' connexion Ã  la source de donnees
     Set objConn = GetNewConnection
     objCmd.ActiveConnection = objConn
   
-    ' actualiser la commande avec les paramètres
+    ' actualiser la commande avec les paramÃ¨tres
     objCmd.Parameters.Refresh
 
     ' variables de la procedure
@@ -747,14 +736,14 @@ Sub creerCommande()
     ' execution
     Set objRs = objCmd.Execute
   
-    'coller les valeurs enregistrées dans le recordset
+    'coller les valeurs enregistrÃ©es dans le recordset
     Set WSP1 = Worksheets("COMMANDE")
         WSP1.Activate
         If objRs.EOF = False Then WSP1.Cells(10, 5).CopyFromRecordset objRs
 
     'mise en page des titres
 
-        Range("C27").Value = "La commande a bien été passée"
+        Range("C27").Value = "La commande a bien Ã©tÃ© passÃ©e"
         
         
     Application.StatusBar = "Data successfully updated."
@@ -786,7 +775,7 @@ ErrHandler:
         MsgBox Err.Source & "-->" & Err.Description, , "Error"
     End If
 End Sub
-Private Function GetNewConnection() As ADODB.Connection 'établir la connexion avec la base SQL
+Private Function GetNewConnection() As ADODB.Connection 'Ã©tablir la connexion avec la base SQL
     Dim oCn As New ADODB.Connection
     Dim sCnStr As String
   
@@ -822,9 +811,9 @@ Sub insererDonnees()
   
   With objCmd
       If objCmd.Parameters.Count = 0 Then
-        .Parameters.Append cmd.CreateParameter("@id_equipe", adVarChar, adParamInput, 20) 'creer paramètre
+        .Parameters.Append cmd.CreateParameter("@id_equipe", adVarChar, adParamInput, 20) 'creer paramÃ¨tre
     End If
-    .Parameters.Item("@id_equipe").Value = Range("H14").Value 'pour inscrire les données
+    .Parameters.Item("@id_equipe").Value = Range("H14").Value 'pour inscrire les donnÃ©es
 End With
 
     ' Execute once and display...
