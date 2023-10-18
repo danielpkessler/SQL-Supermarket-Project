@@ -1,0 +1,870 @@
+Attribute VB_Name = "Module1"
+
+'___________________________________________________________________________________________
+'IFT2821 Intro aux bases de donnees
+'Hiver 2023
+'Projet Epiceries
+'Equipe 06
+
+'Ce fichier VBA (.bas) contient le code pour executer :
+' 1 - connexion au serveur SQL
+' 2 - exécution des procédures SQL à partir des variables extraites de l'interface Excel
+'___________________________________________________________________________________________
+
+Sub afficherLivraisons()
+
+    Application.ScreenUpdating = False
+
+    'effacer les donnees présentes dans le tableau
+    Worksheets("CONFIG").Range("E8:Z200").Delete
+
+
+    'opérer la connexion à la procédure
+    On Error GoTo ErrHandler:
+  
+    'variables de la connexion
+    Dim objConn As New ADODB.Connection
+    Dim objCmd As New ADODB.Command
+    Dim objParm1 As New ADODB.Parameter
+    Dim objRs As New ADODB.Recordset
+  
+    ' assigner à l'objet CommandText la procedure
+    objCmd.CommandText = "sp_afficherLivraisons" '******************************************************************************************************************PROCÉDURE SQL
+    objCmd.CommandType = adCmdStoredProc
+  
+    ' connexion à la source de donnees
+    Set objConn = GetNewConnection
+    objCmd.ActiveConnection = objConn
+  
+    ' actualiser la commande avec les paramètres
+    objCmd.Parameters.Refresh
+  
+    ' variables de la procedure
+    With objCmd
+        .Parameters.Item("@horaire").Value = Range("C10").Value '*****************************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@date_livraison1").Value = Range("C11").Value '*********************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@date_livraison2").Value = Range("C12").Value '*********************************************************************************************************VARIABLE SQL
+    End With
+
+    ' execution
+    Set objRs = objCmd.Execute
+  
+    'coller les valeurs enregistrées dans le recordset
+    Set WSP1 = Worksheets("CONFIG")
+        WSP1.Activate
+        If objRs.EOF = False Then WSP1.Cells(10, 5).CopyFromRecordset objRs
+
+    'mise en page des titres
+    
+        Range("E7").Select
+        ActiveCell.FormulaR1C1 = "Livraisons sélectionnées"
+    
+        Range("E9").Select
+        ActiveCell.FormulaR1C1 = "No Livraison"
+        Range("F9").Select
+        ActiveCell.FormulaR1C1 = "Date livraison"
+        Range("G9").Select
+        ActiveCell.FormulaR1C1 = "Horaire"
+        Range("H9").Select
+        ActiveCell.FormulaR1C1 = "Épicerie"
+        Range("I9").Select
+        ActiveCell.FormulaR1C1 = "Commande"
+        Range("J9").Select
+        ActiveCell.FormulaR1C1 = "Équipe"
+        Range("K9").Select
+        ActiveCell.FormulaR1C1 = "Camion"
+        Range("L9").Select
+        ActiveCell.FormulaR1C1 = "Statut"
+        Range("E9:L9").Select
+        Selection.Font.Bold = True
+        Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+        Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+        With Selection.Borders(xlEdgeLeft)
+            .LineStyle = xlContinuous
+            .ColorIndex = 0
+            .TintAndShade = 0
+            .Weight = xlThin
+        End With
+        With Selection.Borders(xlEdgeTop)
+            .LineStyle = xlContinuous
+            .ColorIndex = 0
+            .TintAndShade = 0
+            .Weight = xlThin
+        End With
+        With Selection.Borders(xlEdgeBottom)
+            .LineStyle = xlContinuous
+            .ColorIndex = 0
+            .TintAndShade = 0
+            .Weight = xlThin
+        End With
+        With Selection.Borders(xlEdgeRight)
+            .LineStyle = xlContinuous
+            .ColorIndex = 0
+            .TintAndShade = 0
+            .Weight = xlThin
+        End With
+        Selection.Borders(xlInsideVertical).LineStyle = xlNone
+        Selection.Borders(xlInsideHorizontal).LineStyle = xlNone
+        
+         Columns("E:K").Select
+        Range("E5").Activate
+        With Selection
+            .HorizontalAlignment = xlLeft
+            .VerticalAlignment = xlBottom
+            .WrapText = False
+            .Orientation = 0
+            .AddIndent = False
+            .IndentLevel = 0
+            .ShrinkToFit = False
+            .ReadingOrder = xlContext
+            .MergeCells = False
+        End With
+        Selection.ColumnWidth = 17.55
+              Range("A1").Select
+        
+        Application.StatusBar = "Data successfully updated."
+
+      'vider le record set
+      objRs.Close
+      objConn.Close
+      Set objRs = Nothing
+      Set objConn = Nothing
+      Set objCmd = Nothing
+      Set objParm1 = Nothing
+      Exit Sub
+    
+ErrHandler:
+    If objRs.State = adStateOpen Then
+        objRs.Close
+    End If
+  
+    If objConn.State = adStateOpen Then
+        objConn.Close
+    End If
+  
+    Set objRs = Nothing
+    Set objConn = Nothing
+    Set objCmd = Nothing
+    Set objParm1 = Nothing
+  
+    If Err <> 0 Then
+        MsgBox Err.Source & "-->" & Err.Description, , "Error"
+    End If
+
+End Sub
+Sub afficherCommande()
+
+Application.ScreenUpdating = False
+
+'effacer les donnees présentes dans le tableau
+    Worksheets("CONFIG").Range("E8:Z200").Delete
+
+
+'opérer la connexion à la procédure
+    On Error GoTo ErrHandler:
+  
+  'variables de la connexion
+    Dim objConn As New ADODB.Connection
+    Dim objCmd As New ADODB.Command
+    Dim objParm1 As New ADODB.Parameter
+    Dim objRs As New ADODB.Recordset
+  
+    ' assigner à l'objet CommandText la procedure
+    objCmd.CommandText = "sp_afficherCommande" '******************************************************************************************************************PROCÉDURE SQL
+    objCmd.CommandType = adCmdStoredProc
+  
+    ' connexion à la source de donnees
+    Set objConn = GetNewConnection
+    objCmd.ActiveConnection = objConn
+  
+    ' actualiser la commande avec les paramètres
+    objCmd.Parameters.Refresh
+  
+    ' variables de la procedure
+    With objCmd
+        .Parameters.Item("@id_com").Value = Range("C19").Value '*****************************************************************************************************************VARIABLE SQL
+    End With
+
+    ' execution
+    Set objRs = objCmd.Execute
+  
+    'coller les valeurs enregistrées dans le recordset
+    Set WSP1 = Worksheets("CONFIG")
+        WSP1.Activate
+        If objRs.EOF = False Then WSP1.Cells(10, 5).CopyFromRecordset objRs
+
+    'mise en page des titres
+    
+        Range("E7").Select
+        ActiveCell.FormulaR1C1 = "Articles de la commande " & Range("C19").Value
+        
+        Range("E9").Select
+        ActiveCell.FormulaR1C1 = "No Article"
+        Range("F9").Select
+        ActiveCell.FormulaR1C1 = "Nom"
+        Range("G9").Select
+        ActiveCell.FormulaR1C1 = "Catégorie"
+        Range("H9").Select
+        ActiveCell.FormulaR1C1 = "Quantite"
+
+        Range("E9:H9").Select
+        Selection.Font.Bold = True
+        Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+        Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+        With Selection.Borders(xlEdgeLeft)
+            .LineStyle = xlContinuous
+            .ColorIndex = 0
+            .TintAndShade = 0
+            .Weight = xlThin
+        End With
+        With Selection.Borders(xlEdgeTop)
+            .LineStyle = xlContinuous
+            .ColorIndex = 0
+            .TintAndShade = 0
+            .Weight = xlThin
+        End With
+        With Selection.Borders(xlEdgeBottom)
+            .LineStyle = xlContinuous
+            .ColorIndex = 0
+            .TintAndShade = 0
+            .Weight = xlThin
+        End With
+        With Selection.Borders(xlEdgeRight)
+            .LineStyle = xlContinuous
+            .ColorIndex = 0
+            .TintAndShade = 0
+            .Weight = xlThin
+        End With
+        Selection.Borders(xlInsideVertical).LineStyle = xlNone
+        Selection.Borders(xlInsideHorizontal).LineStyle = xlNone
+        
+         Columns("E:K").Select
+    Range("E5").Activate
+    With Selection
+        .HorizontalAlignment = xlLeft
+        .VerticalAlignment = xlBottom
+        .WrapText = False
+        .Orientation = 0
+        .AddIndent = False
+        .IndentLevel = 0
+        .ShrinkToFit = False
+        .ReadingOrder = xlContext
+        .MergeCells = False
+    End With
+    Selection.ColumnWidth = 17.55
+                Range("A1").Select
+                
+    Application.StatusBar = "Data successfully updated."
+
+    'vider le record set
+    objRs.Close
+    objConn.Close
+    Set objRs = Nothing
+    Set objConn = Nothing
+    Set objCmd = Nothing
+    Set objParm1 = Nothing
+    Exit Sub
+  
+ErrHandler:
+    If objRs.State = adStateOpen Then
+        objRs.Close
+    End If
+  
+    If objConn.State = adStateOpen Then
+        objConn.Close
+    End If
+  
+    Set objRs = Nothing
+    Set objConn = Nothing
+    Set objCmd = Nothing
+    Set objParm1 = Nothing
+  
+    If Err <> 0 Then
+        MsgBox Err.Source & "-->" & Err.Description, , "Error"
+    End If
+
+End Sub
+Sub afficherCamions()
+
+Application.ScreenUpdating = False
+
+'effacer les donnees présentes dans le tableau
+    Worksheets("CONFIG").Range("E8:Z200").Delete
+
+
+'opérer la connexion à la procédure
+    On Error GoTo ErrHandler:
+  
+  'variables de la connexion
+    Dim objConn As New ADODB.Connection
+    Dim objCmd As New ADODB.Command
+    Dim objParm1 As New ADODB.Parameter
+    Dim objRs As New ADODB.Recordset
+  
+    ' assigner à l'objet CommandText la procedure
+    objCmd.CommandText = "sp_afficherCamions" '******************************************************************************************************************PROCÉDURE SQL
+    objCmd.CommandType = adCmdStoredProc
+  
+    ' connexion à la source de donnees
+    Set objConn = GetNewConnection
+    objCmd.ActiveConnection = objConn
+  
+    ' actualiser la commande avec les paramètres
+    objCmd.Parameters.Refresh
+  
+    ' variables de la procedure
+    With objCmd
+        .Parameters.Item("@date").Value = Range("C25").Value '******************************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@id_epicerie").Value = Range("C26").Value '***********************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@id_equipe").Value = Range("C27").Value '*************************************************************************************************************VARIABLE SQL
+    End With
+
+    ' execution
+    Set objRs = objCmd.Execute
+  
+    'coller les valeurs enregistrées dans le recordset
+    Set WSP1 = Worksheets("CONFIG")
+        WSP1.Activate
+        If objRs.EOF = False Then WSP1.Cells(10, 5).CopyFromRecordset objRs
+
+    'mise en page des titres
+    
+        Range("E7").Select
+        ActiveCell.FormulaR1C1 = "Camions sélectionnés"
+        
+        Range("E9").Select
+        ActiveCell.FormulaR1C1 = "Immatriculation"
+        Range("F9").Select
+        ActiveCell.FormulaR1C1 = "Marque"
+        Range("G9").Select
+        ActiveCell.FormulaR1C1 = "Modèle"
+        Range("H9").Select
+        ActiveCell.FormulaR1C1 = "Année"
+        Range("I9").Select
+        ActiveCell.FormulaR1C1 = "Équipe"
+        Range("J9").Select
+        ActiveCell.FormulaR1C1 = "Capacité"
+        Range("K9").Select
+        ActiveCell.FormulaR1C1 = "Capacité disponible"
+        
+        Range("E9:K9").Select
+        Selection.Font.Bold = True
+        Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+        Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+        With Selection.Borders(xlEdgeLeft)
+            .LineStyle = xlContinuous
+            .ColorIndex = 0
+            .TintAndShade = 0
+            .Weight = xlThin
+        End With
+        With Selection.Borders(xlEdgeTop)
+            .LineStyle = xlContinuous
+            .ColorIndex = 0
+            .TintAndShade = 0
+            .Weight = xlThin
+        End With
+        With Selection.Borders(xlEdgeBottom)
+            .LineStyle = xlContinuous
+            .ColorIndex = 0
+            .TintAndShade = 0
+            .Weight = xlThin
+        End With
+        With Selection.Borders(xlEdgeRight)
+            .LineStyle = xlContinuous
+            .ColorIndex = 0
+            .TintAndShade = 0
+            .Weight = xlThin
+        End With
+        Selection.Borders(xlInsideVertical).LineStyle = xlNone
+        Selection.Borders(xlInsideHorizontal).LineStyle = xlNone
+        
+         Columns("E:K").Select
+    Range("E5").Activate
+    With Selection
+        .HorizontalAlignment = xlLeft
+        .VerticalAlignment = xlBottom
+        .WrapText = False
+        .Orientation = 0
+        .AddIndent = False
+        .IndentLevel = 0
+        .ShrinkToFit = False
+        .ReadingOrder = xlContext
+        .MergeCells = False
+    End With
+    Selection.ColumnWidth = 17.55
+                Range("A1").Select
+    Application.StatusBar = "Data successfully updated."
+
+    'vider le record set
+    objRs.Close
+    objConn.Close
+    Set objRs = Nothing
+    Set objConn = Nothing
+    Set objCmd = Nothing
+    Set objParm1 = Nothing
+    Exit Sub
+  
+ErrHandler:
+    If objRs.State = adStateOpen Then
+        objRs.Close
+    End If
+  
+    If objConn.State = adStateOpen Then
+        objConn.Close
+    End If
+  
+    Set objRs = Nothing
+    Set objConn = Nothing
+    Set objCmd = Nothing
+    Set objParm1 = Nothing
+  
+    If Err <> 0 Then
+        MsgBox Err.Source & "-->" & Err.Description, , "Error"
+    End If
+
+End Sub
+Sub afficherClients()
+
+Application.ScreenUpdating = False
+
+'effacer les donnees présentes dans le tableau
+    Worksheets("CONFIG").Range("E8:Z200").Delete
+
+
+'opérer la connexion à la procédure
+    On Error GoTo ErrHandler:
+  
+  'variables de la connexion
+    Dim objConn As New ADODB.Connection
+    Dim objCmd As New ADODB.Command
+    Dim objParm1 As New ADODB.Parameter
+    Dim objRs As New ADODB.Recordset
+  
+    ' assigner à l'objet CommandText la procedure
+    objCmd.CommandText = "sp_afficherClients" '******************************************************************************************************************PROCÉDURE SQL
+    objCmd.CommandType = adCmdStoredProc
+  
+    ' connexion à la source de donnees
+    Set objConn = GetNewConnection
+    objCmd.ActiveConnection = objConn
+  
+    ' actualiser la commande avec les paramètres
+    objCmd.Parameters.Refresh
+  
+    ' variables de la procedure
+    With objCmd
+        .Parameters.Item("@date1").Value = Range("C33").Value '******************************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@date2").Value = Range("C34").Value '******************************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@rue").Value = Range("C35").Value '********************************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@noCiv").Value = Range("C36").Value '******************************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@noApt").Value = Range("C37").Value '******************************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@nom").Value = Range("C38").Value '********************************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@prenom").Value = Range("C39").Value '*****************************************************************************************************************VARIABLE SQL
+    End With
+
+    ' execution
+    Set objRs = objCmd.Execute
+  
+    'coller les valeurs enregistrées dans le recordset
+    Set WSP1 = Worksheets("CONFIG")
+        WSP1.Activate
+        If objRs.EOF = False Then WSP1.Cells(10, 5).CopyFromRecordset objRs
+
+    'mise en page des titres
+    
+        Range("E7").Select
+        ActiveCell.FormulaR1C1 = "Clients sélectionnés"
+        
+        Range("E9").Select
+        ActiveCell.FormulaR1C1 = "Nom"
+        Range("F9").Select
+        ActiveCell.FormulaR1C1 = "Prénom"
+        Range("G9").Select
+        ActiveCell.FormulaR1C1 = "Rue"
+        Range("H9").Select
+        ActiveCell.FormulaR1C1 = "NoCiv"
+        Range("I9").Select
+        ActiveCell.FormulaR1C1 = "NoAppt"
+        Range("J9").Select
+        ActiveCell.FormulaR1C1 = "CP"
+
+        Range("E9:J9").Select
+        Selection.Font.Bold = True
+        Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+        Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+        With Selection.Borders(xlEdgeLeft)
+            .LineStyle = xlContinuous
+            .ColorIndex = 0
+            .TintAndShade = 0
+            .Weight = xlThin
+        End With
+        With Selection.Borders(xlEdgeTop)
+            .LineStyle = xlContinuous
+            .ColorIndex = 0
+            .TintAndShade = 0
+            .Weight = xlThin
+        End With
+        With Selection.Borders(xlEdgeBottom)
+            .LineStyle = xlContinuous
+            .ColorIndex = 0
+            .TintAndShade = 0
+            .Weight = xlThin
+        End With
+        With Selection.Borders(xlEdgeRight)
+            .LineStyle = xlContinuous
+            .ColorIndex = 0
+            .TintAndShade = 0
+            .Weight = xlThin
+        End With
+        Selection.Borders(xlInsideVertical).LineStyle = xlNone
+        Selection.Borders(xlInsideHorizontal).LineStyle = xlNone
+        
+         Columns("E:K").Select
+    Range("E5").Activate
+    With Selection
+        .HorizontalAlignment = xlLeft
+        .VerticalAlignment = xlBottom
+        .WrapText = False
+        .Orientation = 0
+        .AddIndent = False
+        .IndentLevel = 0
+        .ShrinkToFit = False
+        .ReadingOrder = xlContext
+        .MergeCells = False
+    End With
+    Selection.ColumnWidth = 17.55
+                Range("A1").Select
+    Application.StatusBar = "Data successfully updated."
+
+    'vider le record set
+    objRs.Close
+    objConn.Close
+    Set objRs = Nothing
+    Set objConn = Nothing
+    Set objCmd = Nothing
+    Set objParm1 = Nothing
+    Exit Sub
+  
+ErrHandler:
+    If objRs.State = adStateOpen Then
+        objRs.Close
+    End If
+  
+    If objConn.State = adStateOpen Then
+        objConn.Close
+    End If
+  
+    Set objRs = Nothing
+    Set objConn = Nothing
+    Set objCmd = Nothing
+    Set objParm1 = Nothing
+  
+    If Err <> 0 Then
+        MsgBox Err.Source & "-->" & Err.Description, , "Error"
+    End If
+
+End Sub
+Sub afficherInventaire()
+
+Application.ScreenUpdating = False
+
+'effacer les donnees présentes dans le tableau
+    Worksheets("CONFIG").Range("E8:Z200").Delete
+
+
+'opérer la connexion à la procédure
+    On Error GoTo ErrHandler:
+  
+  'variables de la connexion
+    Dim objConn As New ADODB.Connection
+    Dim objCmd As New ADODB.Command
+    Dim objParm1 As New ADODB.Parameter
+    Dim objRs As New ADODB.Recordset
+  
+    ' assigner à l'objet CommandText la procedure
+    objCmd.CommandText = "sp_afficherInventaire" '******************************************************************************************************************PROCÉDURE SQL
+    objCmd.CommandType = adCmdStoredProc
+  
+    ' connexion à la source de donnees
+    Set objConn = GetNewConnection
+    objCmd.ActiveConnection = objConn
+  
+    ' actualiser la commande avec les paramètres
+    objCmd.Parameters.Refresh
+  
+    ' variables de la procedure
+    With objCmd
+        .Parameters.Item("@categorie").Value = Range("C45").Value '*****************************************************************************************************************VARIABLE SQL
+
+    End With
+
+    ' execution
+    Set objRs = objCmd.Execute
+  
+    'coller les valeurs enregistrées dans le recordset
+    Set WSP1 = Worksheets("CONFIG")
+        WSP1.Activate
+        If objRs.EOF = False Then WSP1.Cells(10, 5).CopyFromRecordset objRs
+
+    'mise en page des titres
+        Range("E7").Select
+        ActiveCell.FormulaR1C1 = "Inventaire à jour"
+        
+        Range("E9").Select
+        ActiveCell.FormulaR1C1 = "ID_Article"
+        Range("F9").Select
+        ActiveCell.FormulaR1C1 = "Nom"
+        Range("G9").Select
+        ActiveCell.FormulaR1C1 = "Catégorie"
+        Range("H9").Select
+        ActiveCell.FormulaR1C1 = "Prix"
+        Range("I9").Select
+        ActiveCell.FormulaR1C1 = "Quantité en inventaire"
+
+        Range("E9:I9").Select
+        Selection.Font.Bold = True
+        Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+        Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+        With Selection.Borders(xlEdgeLeft)
+            .LineStyle = xlContinuous
+            .ColorIndex = 0
+            .TintAndShade = 0
+            .Weight = xlThin
+        End With
+        With Selection.Borders(xlEdgeTop)
+            .LineStyle = xlContinuous
+            .ColorIndex = 0
+            .TintAndShade = 0
+            .Weight = xlThin
+        End With
+        With Selection.Borders(xlEdgeBottom)
+            .LineStyle = xlContinuous
+            .ColorIndex = 0
+            .TintAndShade = 0
+            .Weight = xlThin
+        End With
+        With Selection.Borders(xlEdgeRight)
+            .LineStyle = xlContinuous
+            .ColorIndex = 0
+            .TintAndShade = 0
+            .Weight = xlThin
+        End With
+        Selection.Borders(xlInsideVertical).LineStyle = xlNone
+        Selection.Borders(xlInsideHorizontal).LineStyle = xlNone
+        
+         Columns("E:K").Select
+    Range("E5").Activate
+    With Selection
+        .HorizontalAlignment = xlLeft
+        .VerticalAlignment = xlBottom
+        .WrapText = False
+        .Orientation = 0
+        .AddIndent = False
+        .IndentLevel = 0
+        .ShrinkToFit = False
+        .ReadingOrder = xlContext
+        .MergeCells = False
+    End With
+    Selection.ColumnWidth = 17.55
+            Range("A1").Select
+    Application.StatusBar = "Data successfully updated."
+
+    'vider le record set
+    objRs.Close
+    objConn.Close
+    Set objRs = Nothing
+    Set objConn = Nothing
+    Set objCmd = Nothing
+    Set objParm1 = Nothing
+    Exit Sub
+  
+ErrHandler:
+    If objRs.State = adStateOpen Then
+        objRs.Close
+    End If
+  
+    If objConn.State = adStateOpen Then
+        objConn.Close
+    End If
+  
+    Set objRs = Nothing
+    Set objConn = Nothing
+    Set objCmd = Nothing
+    Set objParm1 = Nothing
+  
+    If Err <> 0 Then
+        MsgBox Err.Source & "-->" & Err.Description, , "Error"
+    End If
+    
+
+End Sub
+Sub creerCommande()
+
+'opérer la connexion à la procédure
+    On Error GoTo ErrHandler:
+  
+  'variables de la connexion
+    Dim objConn As New ADODB.Connection
+    Dim objCmd As New ADODB.Command
+    Dim objParm1 As New ADODB.Parameter
+    Dim objRs As New ADODB.Recordset
+  
+    ' assigner à l'objet CommandText la procedure
+    objCmd.CommandText = "sp_creerCommande" '******************************************************************************************************************PROCÉDURE SQL
+    objCmd.CommandType = adCmdStoredProc
+  
+    ' connexion à la source de donnees
+    Set objConn = GetNewConnection
+    objCmd.ActiveConnection = objConn
+  
+    ' actualiser la commande avec les paramètres
+    objCmd.Parameters.Refresh
+
+    ' variables de la procedure
+    With objCmd
+        .Parameters.Item("@cl_nom").Value = Range("D8").Value '******************************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@cl_prenom").Value = Range("D9").Value '***************************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@cl_noCiv").Value = Range("D11").Value '***************************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@cl_noApt").Value = Range("D12").Value '***************************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@cl_rue").Value = Range("D10").Value '*****************************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@cl_CP").Value = Range("D13").Value '******************************************************************************************************************VARIABLE SQL
+        
+        .Parameters.Item("@livraison_date").Value = Range("D16").Value '*********************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@livraison_horaire").Value = Range("D17").Value '******************************************************************************************************VARIABLE SQL
+        
+        .Parameters.Item("@commande_art1").Value = Range("C21").Value '**********************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@commande_qt1").Value = Range("D21").Value '***********************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@commande_art2").Value = Range("C22").Value '**********************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@commande_qt2").Value = Range("D22").Value '***********************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@commande_art3").Value = Range("C23").Value '**********************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@commande_qt3").Value = Range("D23").Value '***********************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@commande_art4").Value = Range("C24").Value '**********************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@commande_qt4").Value = Range("D24").Value '***********************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@commande_art5").Value = Range("C25").Value '**********************************************************************************************************VARIABLE SQL
+        .Parameters.Item("@commande_qt5").Value = Range("D25").Value '***********************************************************************************************************VARIABLE SQL
+    End With
+
+    ' execution
+    Set objRs = objCmd.Execute
+  
+    'coller les valeurs enregistrées dans le recordset
+    Set WSP1 = Worksheets("COMMANDE")
+        WSP1.Activate
+        If objRs.EOF = False Then WSP1.Cells(10, 5).CopyFromRecordset objRs
+
+    'mise en page des titres
+
+        Range("C27").Value = "La commande a bien été passée"
+        
+        
+    Application.StatusBar = "Data successfully updated."
+
+    'vider le record set
+    objRs.Close
+    objConn.Close
+    Set objRs = Nothing
+    Set objConn = Nothing
+    Set objCmd = Nothing
+    Set objParm1 = Nothing
+    Exit Sub
+  
+ErrHandler:
+    If objRs.State = adStateOpen Then
+        objRs.Close
+    End If
+  
+    If objConn.State = adStateOpen Then
+        objConn.Close
+    End If
+  
+    Set objRs = Nothing
+    Set objConn = Nothing
+    Set objCmd = Nothing
+    Set objParm1 = Nothing
+  
+    If Err <> 0 Then
+        MsgBox Err.Source & "-->" & Err.Description, , "Error"
+    End If
+End Sub
+Private Function GetNewConnection() As ADODB.Connection 'établir la connexion avec la base SQL
+    Dim oCn As New ADODB.Connection
+    Dim sCnStr As String
+  
+    sCnStr = "Provider='SQLOLEDB';Data Source='JPTHERIEN';Integrated Security='SSPI';Initial Catalog='MAXI';"
+    oCn.Open sCnStr
+  
+    If oCn.State = adStateOpen Then
+        Set GetNewConnection = oCn
+    End If
+  
+End Function
+Sub insererDonnees()
+'BeginAutoParamCmd
+    On Error GoTo ErrHandler:
+  
+    Dim objConn As New ADODB.Connection
+    Dim objCmd As New ADODB.Command
+    Dim objParm1 As New ADODB.Parameter
+    Dim objRs As New ADODB.Recordset
+  
+    ' Set CommandText equal to the stored procedure name.
+    objCmd.CommandText = "afficherCoursiers"
+    objCmd.CommandType = adCmdStoredProc
+  
+    ' Connect to the data source.
+    Set objConn = GetNewConnection
+    objCmd.ActiveConnection = objConn
+  
+    ' Automatically fill in parameter info from stored procedure.
+    objCmd.Parameters.Refresh
+  
+    ' Set the param value.
+  
+  With objCmd
+      If objCmd.Parameters.Count = 0 Then
+        .Parameters.Append cmd.CreateParameter("@id_equipe", adVarChar, adParamInput, 20) 'creer paramètre
+    End If
+    .Parameters.Item("@id_equipe").Value = Range("H14").Value 'pour inscrire les données
+End With
+
+    ' Execute once and display...
+    Set objRs = objCmd.Execute
+  
+  
+  Set WSP1 = Worksheets(1)
+WSP1.Activate
+
+If objRs.EOF = False Then WSP1.Cells(8, 2).CopyFromRecordset objRs
+
+
+Application.StatusBar = "Data successfully updated."
+
+    'clean up
+    objRs.Close
+    objConn.Close
+    Set objRs = Nothing
+    Set objConn = Nothing
+    Set objCmd = Nothing
+    Set objParm1 = Nothing
+    Exit Sub
+  
+ErrHandler:
+    'clean up
+    If objRs.State = adStateOpen Then
+        objRs.Close
+    End If
+  
+    If objConn.State = adStateOpen Then
+        objConn.Close
+    End If
+  
+    Set objRs = Nothing
+    Set objConn = Nothing
+    Set objCmd = Nothing
+    Set objParm1 = Nothing
+  
+    If Err <> 0 Then
+        MsgBox Err.Source & "-->" & Err.Description, , "Error"
+    End If
+End Sub
+
