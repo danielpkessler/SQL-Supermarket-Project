@@ -37,4 +37,7 @@ The provided code appears to be a SQL script that defines and demonstrates the f
 4. Cursor:
 - A cursor used to iterate through and display client information.
 
-- 
+
+VBA Application
+
+VBA script used in Microsoft Excel to interact with the previous SQL database. It contains multiple subroutines, each responsible for fetching and displaying specific data from the database. These subroutines share a common structure. They start by disabling screen updating to improve performance, clear existing data in the "CONFIG" worksheet, establish a connection to the database, and execute a stored procedure (SQL function). The retrieved data is then pasted into the "CONFIG" worksheet, followed by formatting the column headers. Error handling is in place to manage any potential issues during database interactions. After the script's execution, the recordset and connection objects are properly closed and deallocated. Overall, this code streamlines the process of fetching and displaying database information in an Excel spreadsheet.
